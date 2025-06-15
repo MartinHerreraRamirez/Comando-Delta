@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="fragments/nav :: nav"></nav>
+
+    <main class="w-full">
+      <div class="w-full lg:w-1/2 h-auto mx-auto mt-10">
+        <h1 class="text-center text-5xl font-black uppercase text-blue-700 mb-10">
+          Agregar Orden
+        </h1>
+
+        <div class="flex justify-center" th:if="${error} != null">
+          <p class="absolute bg-red-600 rounded uppercase px-5 py-1 text-center text-white text-xl" th:text="${error}"></p>
+        </div>
+
+        <div class="flex justify-center mx-auto w-full">
+          <form
+            method="POST"
+            th:action="@{/order/registered}"
+            class="w-full mx-6 rounded px-10 py-10 shadow-2xl rounded-2xl bg-slate-100 mb-10"
+          >
+            <div class="grid gap-6 grid-cols-1 mx-auto">
+              <label for="orderNumber" class="block font-bold capitalize">
+                numero de orden
+                <input
+                  type="text"
+                  id="orderNumber"
+                  name="orderNumber"
+                  th:value="${orderNumber}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Ingrese numero de orden"
+                  required
+                />
+              </label>
+
+              <label for="place" class="block font-bold capitalize">
+                lugar
+                <input
+                  type="text"
+                  id="place"
+                  name="place"
+                  th:value="${place}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Ingrese lugar"
+                  required
+                />
+              </label>
+
+              <label for="requestType" class="block font-bold capitalize">
+                solicitado via
+                <select
+                  name="requestType"
+                  id="requestType"
+                  class="block text-gray-500 font-bold text-center border-2 w-full uppercase rounded"
+                  required
+                >
+                  <option value="ORDEN DE SERVICIO">ORDEN DE SERVICIO</option>
+                  <option value="GDE">GDE</option>
+                  <option value="OTRO">OTRO</option>
+                </select>
+              </label>              
+
+              <label for="serviceType" class="block font-bold capitalize">
+                Tipo
+                <small class="text-xs text-gray-500 block text-center uppercase">usa "ctrl" para seleccionar más de uno</small>
+                <select
+                  name="servicesType"
+                  id="serviceType"
+                  class="block text-gray-500 font-bold text-center border-2 w-full uppercase rounded"
+                  required multiple
+                >
+                  <option value="VANT" class="text-gray-500 font-bold">VANT</option>
+                  <option value="OJO DE HALCON" class="text-gray-500 font-bold">OJO DE HALCON</option>
+                  <option value="ARTURO" class="text-gray-500 font-bold">ARTURO</option>
+                  <option value="SCANNER" class="text-gray-500 font-bold">SCANNER</option>
+                  <option value="FOTO Y VIDEO" class="text-gray-500 font-bold">FOTO Y VIDEO</option>
+                  <option value="OTRO" class="text-gray-500 font-bold">OTRO</option>
+                </select>                
+              </label>
+              
+
+              <label for="individuals" class="block font-bold capitalize col-span-full">
+                personal 
+                <small class="text-xs text-gray-500 block text-center uppercase">usa "ctrl" para seleccionar más de uno</small>                <select multiple
+                name="individuals"
+                id="individuals"
+                class="block text-gray-500 font-bold text-center border-2 w-full uppercase rounded"
+                required 
+                >
+                  <th:block th:if="${individualList != null}">
+                    <option 
+                      class="text-gray-500 font-bold"
+                      th:each="individual : ${individualList}" 
+                      th:value="${individual.id}" 
+                      th:text="${individual.hierarchy.name + ' ' + individual.personalFile + ' ' + individual.fullName}">
+                    </option>
+                  </th:block>
+
+                  <option class="text-gray-500 font-bold" th:if="${individualList == null or #lists.isEmpty(individualList)}" disabled selected>
+                    No hay personal disponible
+                  </option>
+                </select>
+              </label>
+
+              <label for="automobiles" class="block font-bold capitalize col-span-full">
+                movil
+                <small class="text-xs text-gray-500 block text-center uppercase">usa "ctrl" para seleccionar más de uno</small>
+                <select multiple
+                id="automobiles"
+                name="automobiles"
+                class="block text-gray-500 font-bold text-center border-2 w-full uppercase rounded"
+                required 
+                >
+                  <th:block th:if="${automobileList != null}">
+                    <option 
+                      class="text-gray-500 font-bold"
+                      th:each="automobile : ${automobileList}" 
+                      th:value="${automobile.id}" 
+                      th:text="${automobile.number} + '-' + ${automobile.tradeMark} + ${automobile.model}">
+                    </option>
+                  </th:block>
+
+                  <option class="text-gray-500 font-bold" th:if="${automobileList == null or #lists.isEmpty(automobileList)}" disabled selected>
+                    No hay movil disponible
+                  </option>
+                </select>
+              </label>
+            </div>
+
+            <div class="flex justify-center mt-5">
+              <button
+                class="bg-blue-700 py-3 px-5 rounded uppercase w-2/5 text-white font-semibold hover:bg-violet-500 hover:cursor-pointer"
+                type="submit"
+              >
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>    
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+  <body class="bg-gray-200">
+    <main class="flex">
+      <div class="flex items-center justify-center bg-blue-700 h-screen w-1/2">
+        <img
+          th:src="@{/logo.png}"
+          alt="logo"
+          class="rounded-full h-3/4 w-3/4 object-contain"
+        />
+      </div>
+
+      <div class="w-1/2 h-screen flex flex-col justify-center">
+        <h1 class="text-center text-5xl mt-20 font-black uppercase text-blue-700 mb-10">
+          Registro
+        </h1>
+
+        <div class="flex justify-center mb-4" th:if="${error} != null">
+          <p class="absolute bg-red-600 rounded uppercase px-5 py-1 text-center text-white text-xl" th:text="${error}"></p>
+        </div>
+
+        <div class="flex justify-center h-3/5 mx-auto">
+          <form
+            method="POST"
+            th:action="@{/user/registered}"
+            class="w-full mx-6 rounded px-10 py-10 shadow-2xl rounded-2xl bg-slate-100"
+          >
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 capitalize">
+              <div class="flex flex-col">
+                <label for="name" class="block font-bold">Nombre</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  th:value="${name}"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese Nombre"
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="lastName" class="block font-bold">Apellido</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  th:value="${lastName}"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese Apellido"
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="personalFile" class="block font-bold">Legajo Personal</label>
+                <input
+                  type="text"
+                  id="personalFile"
+                  name="personalFile"
+                  th:value="${personalFile}"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese L.P."
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="operatorNumber" class="block font-bold">N° Operador</label>
+                <input
+                  type="text"
+                  id="operatorNumber"
+                  name="operatorNumber"
+                  th:value="${operatorNumber}"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese N° de Operador"
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="email" class="block font-bold">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  th:value="${email}"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese Email"
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="hierarchy" class="block font-bold">Jerarquía</label>
+                <select
+                  name="hierarchyId"
+                  id="hierarchyId"
+                  class="block text-gray-500 font-bold text-center border-2 w-full uppercase rounded"
+                  required
+                >
+                  <option th:each="hierarchy : ${hierarchys}" th:value="${hierarchy.id}" th:text="${hierarchy.name}"></option>
+                </select>
+              </div>
+
+              <div class="flex flex-col">
+                <label for="phone" class="block font-bold">Teléfono</label>
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  th:value="${phone}"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese Teléfono"
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="password" class="block font-bold">Contraseña</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Ingrese Contraseña"
+                  required
+                />
+              </div>
+
+              <div class="flex flex-col">
+                <label for="password2" class="block font-bold">Confirmar </label>
+                <input
+                  type="password"
+                  id="password2"
+                  name="password2"
+                  class="block border px-2 font-normal w-full rounded"
+                  placeholder="Confirmar Contraseña"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-center mt-5">
+              <button
+                class="bg-blue-700 p-2 rounded-xl uppercase w-2/5 text-white font-semibold hover:bg-violet-500"
+                type="submit"
+              >
+                Registrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

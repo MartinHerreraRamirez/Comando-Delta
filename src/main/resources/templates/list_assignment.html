@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html 
+    lang="en"
+    xmlns:th="www.thymeleaf.org"
+>
+<head th:replace="fragments/head :: head"></head>    
+<body class="h-screen w-screen bg-slate-100">
+    
+    <nav th:replace="/fragments/nav" :: nav></nav>
+    
+    <main class="w-full">        
+        
+        <div class="flex justify-around items-center mb-10">           
+
+            <div>
+                <form th:action="@{/assignment/load}" method="GET" class="flex items-center">
+                    <div class="grid grid-cols-1 p-4">
+                        <div>
+                            <select class="border-2 py-2 px-12 uppercase" name="type">
+                                <option value="INDIVIDUAL">personal</option>
+                                <option value="BODYCAM">bodycam</option>
+                                <option value="ARTURO">arturo</option>
+                                <option value="POC">poc</option>
+                                <option value="MORPHO">morpho</option>
+                            </select>
+                        </div>
+                    
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="status" value="ACTIVE" class="mr-2">
+                                Activos
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="status" value="INACTIVE" class="mr-2">
+                                Inactivos
+                            </label>                            
+                        </div>
+                        <div th:if="${loadError} != null" class="mb-2">
+                            <p class="absolute text-red-500 text-lg text-center" th:text="${loadError}"></p>
+                        </div>
+                        
+                        
+                    </div>                
+                    
+                    <div class="-mt-6">
+                        <input class="text-white font-bold p-2 bg-blue-700 rounded hover:bg-purple-500 cursor-pointer" type="submit" value="Cargar">
+                    </div>                   
+                </form>                
+
+                <form th:action="@{/assignment/search/number}" method="GET">
+                    <input class="border-2 p-2" type="text" placeholder="Ingrese N° Equipo/ ICCID" name="number">
+                    <input class="text-white font-bold p-2 bg-blue-700 rounded capitalize hover:bg-purple-500 cursor-pointer" type="submit" value="buscar">                
+                    <div th:if="${error} != null">
+                        <p class="absolute text-red-500 text-lg" th:text="${error}"></p>
+                    </div>
+                </form>                 
+                
+            </div>
+            
+            <div>
+                <h1 class="text-5xl text-blue-700 font-black uppercase mt-6 ">asignaciones</h1>                   
+            </div>
+                        
+            <div class="grid gap-2 my-5">
+                <a th:href="@{/assignment/register}" class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500">agregar asignación</a>
+            </div>
+        </div>  
+
+        <p
+            class="mx-20 text-end text-md mb-2 font-black uppercase"
+            th:if="${chargeList != null and !#lists.isEmpty(chargeList)}"
+        >
+            cantidad
+            <span th:text="${#lists.size(assignmentList)}" class="font-black"></span>
+        </p>
+ 
+        <div th:if="${status == 'ACTIVE'}">
+            <table class="mx-16 w-11/12 text-center uppercase">     
+                <thead class="bg-blue-200 text-lg font-extrabold">
+                    <tr>
+                        <th scope="col">
+                            <p>fecha</p>
+                            <p>inicio</p>
+                        </th>
+                        <th scope="col">sim</th>
+                        <th scope="col">retiro</th> 
+                        <th scope="col">
+                            <p>telefono</p>
+                            <p>contacto</p>
+                        </th>                   
+                        <th scope="col">asigno</th>                     
+                        <th scope="col">comentario</th>
+                        <th scope="col">acciones</th>
+                    </tr>
+                </thead>
+                <div th:if="${assignmentList != null AND assignmentList.size() > 0 AND assignmentList[0].assignmentType == 'INDIVIDUAL'}">
+                    <tbody th:each="assignment : ${assignmentList}">                    
+                        <tr class="h-14 font-bold">                        
+                            <td scope="row" th:text="${assignment.startDate}"></td>
+                            <td scope="row">
+                                <p th:text="${assignment.sim.number}"></p>
+                                <p th:text="${assignment.sim.tradeMark}" class="text-sm"></p>
+                            </td>
+                            <td scope="row" class="text-sm">
+                                <p th:text="${assignment.assignPerson.hierarchy.name + '  L.P.' +  assignment.assignPerson.personalFile}"></p>
+                                <p th:text="${assignment.assignPerson.fullName}"></p>
+                                <p th:text="${assignment.assignPerson.dependency.name}"></p>
+                            </td>
+                            <td scope="row" th:text="${assignment.contactNumber}"></td>
+                            <td scope="row" class="text-sm">
+                                <p th:text="${assignment.assignerUser.hierarchy.name + ' L.P.'+ assignment.assignerUser.personalFile}"></p>
+                                <p th:text="${assignment.assignerUser.lastName}"></p>
+                            </td>
+                            <td scope="row" th:text="${assignment.comment}"></td>
+                            <td scope="row" class="capitalize">                       
+                                <form th:action="@{/assignment/finish/__${assignment.id}__}" method="GET">
+                                    <input type="hidden" th:value="${id}" name="id" />
+                                    <button type="submit" class="px-3 py-1 mt-1 capitalize font-bold bg-green-700 rounded text-white hover:bg-violet-500">finalizar</button>
+                                </form>
+                            </td>
+                        </tr>         
+                    </tbody>                
+                </div>    
+            </table>        
+        </div>
+
+        <div th:if="${status == 'INACTIVE'}">
+            <table class="mx-auto w-11/12 text-center uppercase">
+                <caption th:if="${assignmentList != null} and ${!#lists.isEmpty(assignmentList)}" class="font-black">
+                    <p th:text="${assignmentList[0].isActive == true ? 'En proceso' : 'Finalizados'}"></p>
+                </caption>
+                <thead class="bg-blue-200 text-lg font-extrabold">
+                    <tr>
+                        <th scope="col">
+                            <p>fecha</p>
+                            <p>inicio</p>
+                        </th>
+                        <th scope="col">sim</th>
+                        <th scope="col">retiro</th> 
+                        <th scope="col">
+                            <p>telefono</p>
+                            <p>contacto</p>
+                        </th>                   
+                        <th scope="col">asigno</th>
+                        <th scope="col">
+                            <p>fecha</p>
+                            <p>reintegro</p>
+                        </th>
+                        <th scope="col">reintegro</th>
+                        <th scope="col">recibio</th>
+                        <th scope="col">novedad</th>                     
+                    </tr>
+                </thead>
+                <div th:if="${assignmentList != null AND assignmentList.size() > 0 AND assignmentList[0].assignmentType == 'INDIVIDUAL'}">
+                    <tbody th:each="assignment : ${assignmentList}" class="text-xs">                    
+                        <tr class="h-14 font-bold">                        
+                            <td scope="row" th:text="${assignment.startDate}"></td>
+                            <td scope="row">
+                                <p th:text="${assignment.sim.number}"></p>
+                                <p th:text="${assignment.sim.tradeMark}"></p>
+                            </td>
+                            <td scope="row">
+                                <p th:text="${assignment.assignPerson.hierarchy.name + '  L.P.' +  assignment.assignPerson.personalFile}"></p>
+                                <p th:text="${assignment.assignPerson.fullName}"></p>
+                                <p th:text="${assignment.assignPerson.dependency.name}"></p>
+                            </td>
+                            <td scope="row" th:text="${assignment.contactNumber}"></td>
+                            <td scope="row">
+                                <p th:text="${assignment.assignerUser.hierarchy.name + ' L.P.' + assignment.assignerUser.personalFile}"></p>
+                                <p th:text="${assignment.assignerUser.lastName}"></p>
+                            </td>
+                            <td scope="row" th:text="${assignment.endDate}"></td>
+                            <td scope="row">
+                                <p th:text="${assignment.returnPerson.hierarchy.name + ' L.P.' + assignment.returnPerson.personalFile}"></p>
+                                <p th:text="${assignment.returnPerson.fullName}"></p>
+                                <p th:text="${assignment.returnPerson.dependency.name}"></p>
+                            </td>
+                            <td scope="row">
+                                <p th:text="${assignment.receivesUser.hierarchy.name + '  L.P.' + assignment.receivesUser.personalFile}"></p>
+                                <p th:text="${assignment.receivesUser.lastName}"></p>
+                            </td>
+                            <td scope="row" th:text="${assignment.noventy}"></td>                            
+                        </tr>         
+                    </tbody>                
+                </div>    
+            </table>        
+            
+        </div>
+                   
+        <p th:if="${#lists.isEmpty(assignmentList)}">
+            <span class="flex justify-center text-2xl font-black uppercase mt-20">no se encontraron resultados</span>
+        </p>
+        
+    </main>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" : nav></nav>
+
+    <main class="w-full">
+      <h1
+        class="text-center text-5xl mt-5 font-black uppercase text-blue-700 mb-20"
+      >
+        Registrar Usuario
+      </h1>
+
+      <div class="flex justify-center" th:if="${error} != null">
+        <p
+          class="absolute bg-red-600 rounded uppercase px-5 py-1 text-center text-white text-xl"
+          th:text="${error}"
+        ></p>
+      </div>
+
+      <form
+        method="POST"
+        th:action="@{/admin/user/registered}"
+        class="mx-auto w-full max-w-6xl p-10 grid gap-6 bg-slate-100 shadow-2xl rounded-2xl mb-10"
+      >
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+          <label for="name" class="block font-bold">
+            Nombre
+            <input
+              type="text"
+              id="name"
+              name="name"
+              th:value="${name}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Nombre"
+              required
+            />
+          </label>
+
+          <label for="lastName" class="block font-bold">
+            Apellido
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              th:value="${lastName}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Apellido"
+              required
+            />
+          </label>
+
+          <label for="personalFile" class="block font-bold">
+            Legajo Personal
+            <input
+              type="text"
+              id="personalFile"
+              name="personalFile"
+              th:value="${personalFile}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese L.P."
+              required
+            />
+          </label>
+
+          <label for="operatorNumber" class="block font-bold">
+            N° Operador
+            <input
+              type="text"
+              id="operatorNumber"
+              name="operatorNumber"
+              th:value="${operatorNumber}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese N° de Operador"
+              required
+            />
+          </label>
+
+          <label for="email" class="block font-bold">
+            Email
+            <input
+              type="email"
+              id="email"
+              name="email"
+              th:value="${email}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Email"
+              required
+            />
+          </label>
+
+          <label for="hierarchyId" class="block font-bold">
+            Jerarquía
+            <select
+              name="hierarchyId"
+              id="hierarchyId"
+              class="block w-full border-2 px-4 py-2 text-gray-700 uppercase rounded text-center"
+            >
+              <option
+                th:each="hierarchy : ${hierarchys}"
+                th:value="${hierarchy.id}"
+                th:text="${hierarchy.name}"
+              ></option>
+            </select>
+          </label>
+
+          <label for="rol" class="block font-bold">
+            Rol
+            <select
+              name="rol"
+              id="rol"
+              class="block w-full border-2 px-4 py-2 text-gray-700 uppercase rounded text-center"
+            >
+              <option
+              th:each="rol : ${rols}"
+              th:value="${rol.name}"
+              th:text="${rol.name}"
+              th:if="${rol.name != 'SUPERADMIN'}"
+              ></option>
+            </select>
+          </label>
+
+          <label for="phone" class="block font-bold">
+            Teléfono
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              th:value="${phone}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Teléfono"
+              required
+            />
+          </label>
+
+          <label for="password" class="block font-bold">
+            Contraseña
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Contraseña"
+              required
+            />
+          </label>
+
+          <label for="password2" class="block font-bold">
+            Confirmar
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Contraseña"
+              required
+            />
+          </label>
+        </div>
+
+        <div class="flex justify-center mt-6">
+          <button
+            class="bg-blue-700 p-3 rounded-xl uppercase w-2/5 text-white font-semibold hover:bg-violet-500 hover:cursor-pointer"
+          >
+            Registrar
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

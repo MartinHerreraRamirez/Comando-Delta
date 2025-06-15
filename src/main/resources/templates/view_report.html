@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html 
+    lang="en"
+    xmlns:th='www.thymeleaf.org'
+>
+<head th:replace="fragments/head" :: head></head>
+<body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" :: nav></nav>
+
+    <main class="my-10 mx-4 md:mx-10 lg:mx-20 xl:mx-40 h-full border-2 shadow-2xl rounded-lg">        
+            
+        <p class="p-5 text-xl font-bold text-gray-600 text-end">Fecha:
+            <span th:text="${report.date}"></span>
+        </p>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl  font-black uppercase text-center mb-10">D.A. N° 
+            <span th:text="${report.reportNumber}"></span>
+        </h1>
+
+        <section class="m-10 p-5 border-2 capitalize rounded-lg bg-white shadow-md">
+            <h2 class="font-bold mb-5 underline text-xl">Datos Operador</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto max-w-full">
+                
+                <div>
+                    <p class="font-bold">Jerarquía:</p>
+                    <span th:text="${report.users.hierarchy.name}" class="text-gray-600 font-medium"></span>
+                </div>
+
+                <div>
+                    <p class="font-bold">L.P.:</p>
+                    <span th:text="${report.users.personalFile}" class="text-gray-600 font-medium"></span>
+                </div>
+    
+                <div>
+                    <p class="font-bold">Nombre y Apellido:</p>
+                    <span th:text="${report.users.name}" class="text-gray-600 font-medium"></span>
+                    <span th:text="${report.users.lastName}" class="text-gray-600 font-medium"></span>
+                </div>
+                
+                <div>
+                    <p class="font-bold">Número de Operador:</p>
+                    <span th:text="${report.users.operatorNumber}" class="text-gray-600 font-medium"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="m-10 p-5 border-2 capitalize rounded-lg bg-white shadow-md">
+            <h2 class="font-bold mb-5 underline text-xl">Datos Denuncia</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto max-w-full">
+                <div>
+                    <p class="font-bold">Número de G.D.E.:</p>
+                    <span th:text="${report.gdeNumber}" class="text-gray-600 font-medium"></span>
+                </div>
+
+                <div>
+                    <p class="font-bold">Diligenciado:</p>
+                    <span th:text="${report.dependency}" class="text-gray-600 font-medium"></span>
+                </div>
+
+                <div>
+                    <p class="font-bold">Localidad:</p>
+                    <span th:text="${report.location}" class="text-gray-600 font-medium"></span>
+                </div>
+
+                <div>
+                    <p class="font-bold">Dirección:</p>
+                    <span th:text="${report.address}" class="text-gray-600 font-medium"></span>
+                </div>
+            </div>
+
+            <p class="text-center mt-10 mb-2 font-black">Relato</p>
+
+            <div class="overflow-y-auto h-72 w-full mx-auto max-w-full p-2 bg-gray-50 border border-gray-300 rounded-lg">
+                <p th:text="${report.bodyReport}" class="text-gray-600 font-medium break-all"></p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

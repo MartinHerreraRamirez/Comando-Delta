@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+  <body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" : nav></nav>
+
+    <main
+      class="my-10 mx-4 md:mx-10 lg:mx-20 xl:mx-40 h-full border border-2 shadow-2xl"
+    >
+      <h1
+        class="text-3xl sm:text-4xl md:text-5xl mt-5 font-bold uppercase text-center mb-5"
+      >
+        FICHA
+        <span th:text="${charge.file}" class="block"></span>
+      </h1>
+
+      <form class="grid grid-cols-1 md:grid-cols-3 gap-10 mx-10 p-10">
+        <section class="capitalize space-y-7 text-xl font-bold w-full">
+          <p>
+            <i>Partida:</i>
+            <span th:text="${charge.departure}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Apertura:</i>
+            <span th:text="${charge.opening}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Fecha Admision:</i>
+            <span th:text="${charge.dateAdmission}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Fecha Cargo:</i>
+            <span th:text="${charge.dateCharge}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Expediente:</i>
+            <span th:text="${charge.expedient}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Número Serie:</i>
+            <span th:text="${charge.serialNumber}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Precio:</i>
+            <span th:text="'$'+ ${charge.price}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Cantidad:</i>
+            <span th:text="${charge.quantity}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Lugar:</i>
+            <span th:text="${charge.place}" class="font-black"></span>
+          </p>
+        </section>
+
+        <section
+          class="mx-5 p-2 capitalize space-y-5 text-xl font-bold w-full md:col-span-2"
+        >
+          <div class="h-96 w-full">
+            <img
+              th:src="@{/image/charge/__${charge.id}__}"
+              alt="imagen cargo"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <p>
+            <span
+              th:text="${charge.description}"
+              class="font-black break-all"
+            ></span>
+          </p>
+        </section>
+      </form>
+    </main>
+  </body>
+</html>

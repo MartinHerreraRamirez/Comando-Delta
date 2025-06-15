@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" : nav></nav>
+
+    <main class="w-full">
+      <div class="flex justify-around items-center gap-10 mb-10">
+        <div>
+          <form th:action="@{/individual/search}" method="GET">
+            <input
+              class="border-2 p-2"
+              type="text"
+              placeholder="Ingrese L.P."
+              name="personalFile"
+            />
+            <input
+              class="text-white font-bold p-2 bg-blue-700 rounded capitalize hover:bg-purple-500 cursor-pointer"
+              type="submit"
+              value="buscar"
+            />
+          </form>
+
+          <div th:if="${error} != null">
+            <p class="absolute text-red-500 text-lg" th:text="${error}"></p>
+          </div>
+        </div>
+
+        <h1 class="text-5xl text-blue-700 font-black uppercase mt-6 pb-7">
+          Personal
+        </h1>
+
+        <div class="space-x-5">
+          <a
+            th:href="@{/individual/register}"
+            class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500"
+            >agregar personal</a
+          >
+        </div>
+      </div>
+
+      <p
+        class="mx-20 text-end text-md mb-2 font-black uppercase"
+        th:if="${individualList != null and !#lists.isEmpty(individualList)}"
+      >
+        cantidad
+        <span
+          th:text="${#lists.size(individualList)}"
+          class="font-black"
+        ></span>
+      </p>
+
+      <div>
+        <table class="mx-16 w-11/12 text-center uppercase">
+          <thead class="bg-blue-200 text-lg">
+            <tr>
+              <th scope="col">nombre completo</th>
+              <th scope="col">legajo</th>
+              <th scope="col">jerarquia</th>
+              <th scope="col">dependencia</th>
+              <th scope="col">acciones</th>
+            </tr>
+          </thead>
+          <tbody
+            th:if="${individualList} != null"
+            th:each="individual : ${individualList}"
+          >
+            <tr class="font-bold">
+              <td scope="row" th:text="${individual.fullName}"></td>
+              <td scope="row" th:text="${individual.personalFile}"></td>
+              <td scope="row" th:text="${individual.hierarchy.name}"></td>
+              <td scope="row" th:text="${individual.dependency.name}"></td>
+              <td
+                scope="row"
+                class="capitalize flex justify-center items-center gap-2 h-12"
+              >
+                <a
+                  th:href="@{/individual/edit/__${individual.id}__}"
+                  class="px-3 py-1 font-bold bg-green-700 rounded text-white hover:bg-violet-500"
+                  >editar</a
+                >
+                <form
+                  th:action="@{/individual/delete/__${individual.id}__}"
+                  method="post"
+                  th:if="${session.currentUser.rol.toString()} == 'ADMIN'"
+                >
+                  <input type="hidden" th:value="${id}" name="id" />
+                  <button
+                    type="submit"
+                    class="px-3 py-1 capitalize font-bold bg-red-700 rounded text-white hover:bg-violet-500"
+                  >
+                    eliminar
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p th:if="${#lists.isEmpty(individualList)}">
+          <span class="flex justify-center text-2xl font-black uppercase mt-20"
+            >no se encontraron resultados</span
+          >
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

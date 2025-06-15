@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html 
+    lang="en"
+    xmlns:th="www.thymeleaf.org"
+>
+<head th:replace="fragments/head :: head"></head>    
+<body class="bg-gray-200">
+    
+    <nav th:replace="/fragments/nav" :: nav></nav>
+    
+    <main class="w-full">        
+        
+        <div class="flex justify-around items-center gap-10 mb-10">
+
+            <div class="space-y-1" name="typeListloan" id="typeListloan">
+
+                <form th:action="@{/loan/load}" method="GET" class="flex items-center">
+                    <div class="grid grid-cols-1 p-4">
+                        <div>
+                            <select class="border-2 py-2 px-4 w-full text-center" name="type">
+                                <option 
+                                    th:each="type : ${typeEquipmentList}"
+                                    th:value="${type}"
+                                    th:text="${type}"
+                                />                       
+                            </select>
+                        </div>
+                    
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="status" value="active" class="mr-2">
+                                Activos
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="status" value="inactive" class="mr-2">
+                                Inactivos
+                            </label>
+                        </div>
+                    </div>                
+                    
+                    <div class="-mt-6">
+                        <input class="text-white font-bold p-2 bg-blue-700 rounded hover:bg-purple-500 cursor-pointer" type="submit" value="Cargar">
+                    </div>
+                   
+                </form>
+                
+
+                <form th:action="@{/loan/search/number}" method="GET">
+                    <input class="border-2 p-2" type="text" placeholder="Ingrese N° de Equipo" name="number">
+                    <input class="text-white font-bold p-2 bg-blue-700 rounded capitalize hover:bg-purple-500 cursor-pointer" type="submit" value="buscar">                
+                    <div th:if="${error} != null">
+                        <p class="absolute text-red-500 text-lg" th:text="${error}"></p>
+                    </div>
+                </form>                 
+                
+            </div>
+            
+            <h1 class="text-5xl text-blue-700 font-black uppercase mt-6 pb-7">Prestamos</h1>                   
+            
+            <div class="grid gap-2 my-5">
+                <a th:href="@{/loan/register}" class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500">agregar prestamo</a>                
+            </div>
+        </div>  
+
+        <p
+            class="mx-20 text-end text-md mb-2 font-black uppercase"
+            th:if="${loanList != null and !#lists.isEmpty(loanList)}"
+        >
+            cantidad
+            <span
+                th:text="${#lists.size(loanList)}"
+                class="font-black"
+            ></span>
+        </p>
+
+        <div th:if="${status == 'inactive'}">
+            <table class="mx-16 w-11/12 text-center uppercase">
+                <caption th:if="${loanList != null} and ${!#lists.isEmpty(loanList)}" class="font-black">
+                    <p th:text="${loanList[0].isActive == true ? 'En proceso' : 'Finalizados'}"></p>
+                </caption>
+                <thead class="bg-blue-200 text-md font-extrabold">
+                    <tr>
+                        <th scope="col">
+                            <p>fecha</p>
+                            <p>inicio</p>
+                        </th>
+                        <th scope="col">equipo</th>                    
+                        <th scope="col">retiro</th>
+                        <th scope="col">
+                            <p>telefono</p>
+                            <p>contacto</p>
+                        </th>
+                        <th scope="col">entrego</th>
+                        <th scope="cole">
+                            <p th:if="${loanList != null and loanList.size() > 0 and loanList[0].endDate != null}">fecha</p>
+                            <p th:if="${loanList != null and loanList.size() > 0 and loanList[0].endDate != null}">reintegro</p>
+                        </th>
+                        <th scope="col">reintegro</th>
+                        <th scope="col">recibio</th>                        
+                        <th scope="col">novedad</th>                        
+                    </tr>
+                </thead>
+                <tbody th:if="${loanList} != null" th:each="loan : ${loanList}">
+                    <tr class="h-14 text-xs font-bold">                        
+                        <td scope="row" th:text="${loan.startDate}" class="text-sm"></td>
+                        <td scope="row">
+                            <p th:text="'N° ' + ${loan.equipment.number}"></p>
+                            <p th:text="${loan.equipment.typeEquipment}"></p>
+                        </td>
+                        <td scope="row">
+                            <p th:text="${loan.withdrawIndividual.hierarchy.name} + ' ' + ${loan.withdrawIndividual.fullName}"></p>
+                            <p th:text="${loan.withdrawIndividual.personalFile} + ' ' + ${loan.withdrawIndividual.dependency.name}"></p>
+                        </td>
+                        <td scope="row" th:text="${loan.contactNumber}"></td>
+                        <td scope="row">
+                            <p th:text="${loan.deliveryUser.hierarchy.name} + ' ' + ${loan.deliveryUser.lastName}"></p>
+                            <p th:text="'operador ' + ${loan.deliveryUser.operatorNumber}"></p>
+                        </td>
+                        <td scope="row" th:text="${loan.endDate}" class="text-sm"></td>
+                        <td scope="row">
+                            <p th:text="${loan.returnIndividual.hierarchy.name} + ' ' + ${loan.returnIndividual.fullName}"></p>
+                            <p th:text="${loan.returnIndividual.personalFile} + ' ' + ${loan.returnIndividual.dependency.name}"></p>
+                        </td>
+                        <td scope="row">
+                            <p th:text="${loan.receivesUser.hierarchy.name} + ' ' + ${loan.receivesUser.lastName}"></p>
+                            <p th:text="'operador ' + ${loan.receivesUser.operatorNumber}"></p>
+                        </td>
+                        <td scope="row" th:text="${loan.novelty}"></td>                                        
+                    </tr>         
+                </tbody>
+            </table>
+        </div>      
+
+        <div th:if="${status != 'inactive'}">
+            <table class="mx-16 w-11/12 text-center uppercase">
+                <caption th:if="${loanList != null} and ${!#lists.isEmpty(loanList)}" class="font-black">
+                    <p th:text="${loanList[0].isActive == true ? 'En proceso' : 'Finalizados'}"></p>
+                </caption>
+                <thead class="bg-blue-200 font-extrabold">
+                    <tr>
+                        <th scope="col">
+                            <p>fecha</p>
+                            <p>inicio</p>
+                        </th>
+                        <th scope="col">equipo</th>                    
+                        <th scope="col">retiro</th>
+                        <th scope="col">
+                            <p>telefono</p>
+                            <p>contacto</p>
+                        </th>
+                        <th scope="col">entrego</th>                                            
+                        <th scope="col">comentario</th>
+                        <th scope="col" th:if="${loanList != null} and ${!#lists.isEmpty(loanList)}">
+                            <p th:if="${loanList != null and loanList.size() > 0 and loanList[0].endDate != null}">acciones</p>    
+                        </th>   
+                    </tr>
+                </thead>
+                <tbody th:if="${loanList} != null" th:each="loan : ${loanList}">
+                    <tr class="h-14 font-bold">                        
+                        <td scope="row" th:text="${loan.startDate}" class="text-sm"></td>
+                        <td scope="row">
+                            <p th:text="'N° ' + ${loan.equipment.number}"></p>
+                            <p th:text="${loan.equipment.typeEquipment}"></p>
+                        </td>
+                        <td scope="row">
+                            <p th:text="${loan.withdrawIndividual.hierarchy.name} + ' ' + ${loan.withdrawIndividual.fullName}"></p>
+                            <p th:text="${loan.withdrawIndividual.personalFile} + ' ' + ${loan.withdrawIndividual.dependency.name}"></p>
+                        </td>
+                        <td scope="row" th:text="${loan.contactNumber}"></td>
+                        <td scope="row">
+                            <p th:text="${loan.deliveryUser.hierarchy.name} + ' ' + ${loan.deliveryUser.lastName}"></p>
+                            <p th:text="'operador ' + ${loan.deliveryUser.operatorNumber}"></p>
+                        </td>
+                        <td scope="row" th:text="${loan.comment}"></td>
+                        <td scope="row"  th:if="${loan.isActive == true}">                       
+                            <form th:action="@{/loan/finish/__${loan.id}__}" method="GET">
+                                <input type="hidden" th:value="${id}" name="id" />
+                                <button type="submit" class="px-3 py-1 mt-1 w-full uppercase font-extrabold font-bold bg-green-700 rounded text-white hover:bg-violet-500">finalizar</button>
+                            </form>
+                        </td>                    
+                    </tr>         
+                </tbody>
+            </table>
+        </div>
+        
+        
+                   
+        <p th:if="${#lists.isEmpty(loanList)}">
+            <span class="flex justify-center text-2xl font-black uppercase mt-20">no se encontraron resultados</span>
+        </p>
+        
+    </main>
+</body>
+</html>

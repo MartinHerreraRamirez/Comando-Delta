@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html 
+    lang="en"
+    xmlns:th="www.thymeleaf.org"
+>
+    <head th:replace="fragments/head" :: head></head>
+<body class="h-screen">
+
+    <main class="flex">
+
+        <section class="flex items-center justify-center bg-blue-700 h-screen w-1/2">
+            <img th:src="@{/logo.png}" alt="logo" class="rounded-full h-3/4 w-3/4 object-contain">
+        </section>
+        
+        <section class="w-1/2 h-screen">
+            <div class="flex justify-center items-center h-screen">
+
+                <div class="flex flex-col gap-5 text-center">                                        
+                    <a th:href="@{/charge/list}" class="bg-blue-700 px-16 py-5 rounded-xl uppercase w-full text-white font-semibold hover:bg-violet-500 hover:cursor-pointer capitalize">cargos</a>
+                    <a th:href="@{/report/list}" class="bg-blue-700 px-16 py-5 rounded-xl uppercase w-full text-white font-semibold hover:bg-violet-500 hover:cursor-pointer capitalize">denuncias</a>
+                    <a th:href="@{/equipment/list}" class="bg-blue-700 px-16 py-5 rounded-xl uppercase w-full text-white font-semibold hover:bg-violet-500 hover:cursor-pointer capitalize">equipos</a>
+                    <a th:href="@{/sim/list}" class="bg-blue-700 px-16 py-5 rounded-xl uppercase w-full text-white font-semibold hover:bg-violet-500 hover:cursor-pointer capitalize">sims</a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+</body>
+</html>

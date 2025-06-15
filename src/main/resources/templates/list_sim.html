@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" : nav></nav>
+
+    <main class="w-full">
+      <div class="flex justify-around items-center mb-10 gap-10 mt-5">
+        <form th:action="@{/sim/search}" method="GET">
+          <input
+            class="border-2 p-2"
+            type="text"
+            placeholder="Ingrese N° SIM / ICCID"
+            name="number"
+          />
+          <input
+            class="text-white font-bold p-2 bg-blue-700 rounded cursor-pointer capitalize hover:bg-purple-500"
+            type="submit"
+            value="buscar"
+          />
+
+          <div th:if="${error} != null">
+            <p class="absolute text-red-500 text-lg" th:text="${error}"></p>
+          </div>
+        </form>
+
+        <div>
+          <h1
+            class="text-5xl text-center text-blue-700 font-black uppercase mt-6 pb-7"
+          >
+            sims
+          </h1>
+        </div>
+
+        <div class="grid grid-cols-1 gap-2">
+          <a
+            th:href="@{/sim/register}"
+            class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500"
+            >agregar sim</a
+          >
+          <a
+            th:href="@{/assignment/list}"
+            class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500"
+            >asignaciones</a
+          >
+        </div>
+      </div>
+
+      <p
+        class="mx-20 text-end text-md mb-2 font-black uppercase"
+        th:if="${simList != null and !#lists.isEmpty(simList)}"
+      >
+        cantidad
+        <span th:text="${#lists.size(simList)}" class="font-black"></span>
+      </p>
+
+      <div>
+        <table class="mx-16 w-11/12 text-center uppercase">
+          <thead class="bg-blue-200 text-lg">
+            <tr>
+              <th scope="col">abonado</th>
+              <th scope="col">iccid</th>
+              <th scope="col">empresa</th>
+              <th scope="col">plan</th>
+              <th scope="col">cargado por</th>
+              <th scope="col">disponible</th>
+              <th scope="col">acciones</th>
+            </tr>
+          </thead>
+          <tbody th:if="${simList} != null" th:each="sim : ${simList}">
+            <tr class="h-10 font-bold">
+              <td scope="row" th:text="${sim.number}"></td>
+              <td scope="row" th:text="${sim.serialNumber}"></td>
+              <td scope="row" th:text="${sim.tradeMark}"></td>
+              <td scope="row" th:text="${sim.plan}"></td>
+              <td scope="row" th:text="${sim.user.lastName}"></td>
+              <td scope="row" th:if="${sim.isAvailable == true}">
+                <p
+                  class="p-1 bg-green-400 text-white font-black rounded-full w-1/2 mx-auto"
+                >
+                  ✓
+                </p>
+              </td>
+              <td scope="row" th:if="${sim.isAvailable == false}">
+                <p
+                  class="p-1 bg-red-400 text-white font-black rounded-full w-1/2 mx-auto"
+                >
+                  X
+                </p>
+              </td>
+              <td
+                scope="row"
+                class="capitalize flex justify-center items-center gap-2 h-10"
+              >                
+                <a
+                  th:href="@{/sim/edit/__${sim.id}__}"
+                  class="px-3 py-1 font-bold bg-green-700 rounded text-white hover:bg-violet-500"
+                  >editar</a
+                >
+                <form
+                  th:action="@{/sim/delete/__${sim.id}__}"
+                  method="post"
+                  th:if="${session.currentUser.rol.toString()} == 'ADMIN'"
+                >
+                  <input type="hidden" th:value="${id}" name="id" />
+                  <button
+                    type="submit"
+                    class="px-3 py-1 capitalize font-bold bg-red-700 rounded text-white hover:bg-violet-500"
+                  >
+                    eliminar
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p th:if="${#lists.isEmpty(simList)}">
+          <span class="flex justify-center text-2xl font-black uppercase mt-20"
+            >no se encontraron resultados</span
+          >
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="fragments/nav :: nav"></nav>
+
+    <main class="w-full">
+      <div class="w-full lg:w-1/2 h-auto mx-auto mt-10">
+        <h1 class="text-center text-5xl font-black uppercase text-blue-700 mb-10">
+          Agregar Cargo
+        </h1>
+
+        <div class="flex justify-center" th:if="${error} != null">
+          <p class="absolute bg-red-600 rounded uppercase px-5 py-1 text-center text-white text-xl" th:text="${error}"></p>
+        </div>
+
+        <div class="flex justify-center mx-auto w-full">
+          <form
+            method="POST"
+            th:action="@{/charge/registered}"
+            class="w-full mx-6 rounded px-10 py-10 shadow-2xl rounded-2xl bg-slate-100 mb-10"
+            enctype="multipart/form-data"
+          >
+            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto">
+              <label for="number" class="block font-bold capitalize">
+                Número
+                <input
+                  type="text"
+                  id="number"
+                  name="number"
+                  th:value="${number}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Ingrese Número"
+                  required
+                />
+              </label>
+
+              <label for="file" class="block font-bold capitalize">
+                Ficha
+                <input
+                  type="text"
+                  id="file"
+                  name="file"
+                  th:value="${file}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="N° de ficha"
+                  required
+                />
+              </label>
+
+              <label for="departure" class="block font-bold capitalize">
+                Partida
+                <input
+                  type="text"
+                  id="departure"
+                  name="departure"
+                  th:value="${departure}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="N° de Partida"
+                  required
+                />
+              </label>
+
+              <label for="opening" class="block font-bold capitalize">
+                Apertura
+                <input
+                  type="text"
+                  id="opening"
+                  name="opening"
+                  th:value="${opening}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="N° de Apertura"
+                  required
+                />
+              </label>
+
+              <label for="dateAdmission" class="block font-bold capitalize">
+                Fecha de Ingreso
+                <input
+                  type="text"
+                  id="dateAdmission"
+                  name="dateAdmission"
+                  th:value="${dateAdmission}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Fecha de Ingreso"
+                  required
+                />
+              </label>
+
+              <label for="dateCharge" class="block font-bold capitalize">
+                Fecha de Cargo
+                <input
+                  type="text"
+                  id="dateCharge"
+                  name="dateCharge"
+                  th:value="${dateCharge}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Fecha de Cargo"
+                  required
+                />
+              </label>
+
+              <label for="expedient" class="block font-bold capitalize">
+                Expediente
+                <input
+                  type="text"
+                  id="expedient"
+                  name="expedient"
+                  th:value="${expedient}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="N° de expediente"
+                  required
+                />
+              </label>
+
+              <label for="serialNumber" class="block font-bold capitalize">
+                N° Serie
+                <input
+                  type="text"
+                  id="serialNumber"
+                  name="serialNumber"
+                  th:value="${serialNumber}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="N° de Serie"
+                  required
+                />
+              </label>
+
+              <label for="price" class="block font-bold capitalize">
+                Precio
+                <input
+                  type="text"
+                  id="price"
+                  name="price"
+                  th:value="${price}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Ingrese Precio"
+                  required
+                />
+              </label>
+
+              <label for="quantity" class="block font-bold capitalize">
+                Cantidad
+                <input
+                  type="text"
+                  id="quantity"
+                  name="quantity"
+                  th:value="${quantity}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Ingrese Cantidad"
+                  required
+                />
+              </label>
+
+              <label for="place" class="block font-bold capitalize">
+                Lugar
+                <input
+                  type="text"
+                  id="place"
+                  name="place"
+                  th:value="${place}"
+                  class="block border-2 px-3 py-2 font-normal w-full rounded"
+                  placeholder="Ingrese Lugar"
+                  required
+                />
+              </label>
+
+              <label for="typeCharge" class="block font-bold">
+                Oficina
+                <select
+                  name="typeCharge"
+                  id="typeCharge"
+                  class="block w-full border-2 px-4 py-2 text-gray-700 uppercase rounded text-center"
+                >
+                  <option
+                  th:each="type : ${typeCharge}"
+                  th:value="${type.name}"
+                  th:text="${type.name}"                  
+                  ></option>
+                </select>
+              </label>              
+            </div>
+
+            <label
+              for="image"
+              class="block font-bold capitalize border-2 mx-auto mt-4 w-36 text-center font-black cursor-pointer py-3 text-white bg-blue-700 rounded hover:bg-violet-500 my-auto"
+            >
+              Cargar Imagen
+              <input
+                type="file"
+                accept="image/*"
+                id="image"
+                name="image"
+                th:value="${image}"
+                class="hidden"
+              />
+            </label>
+
+            <label for="description" class="block font-bold capitalize mt-5 text-center">
+              Descripción
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              th:text="${description}"
+              class="border-2 font-normal h-20 w-full leading-tight focus:outline-none focus:shadow-outline resize-none p-3 rounded"
+              placeholder="Ingrese la descripción"
+              required
+            ></textarea>
+
+            <div class="flex justify-center mt-5">
+              <button
+                class="bg-blue-700 py-3 px-5 rounded uppercase w-2/5 text-white font-semibold hover:bg-violet-500 hover:cursor-pointer"
+                type="submit"
+              >
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

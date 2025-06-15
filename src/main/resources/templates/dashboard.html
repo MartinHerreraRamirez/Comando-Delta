@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html 
+    lang="en"
+    xmlns:th="www.thymeleaf.org"
+>
+    <head th:replace="fragments/head :: head"></head>    
+<body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" :: nav></nav>
+
+    <main>
+
+        <div class="flex justify-around items-center mb-10 gap-10">
+            
+            <form th:action="@{/admin/search}" method="GET">
+                <input class="border-2 p-2" type="text" placeholder="Ingrese N° L.P." name="personalFile">
+                <input class="text-white font-bold p-2 bg-blue-700 rounded capitalize hover:bg-purple-500 cursor-pointer" type="submit" value="buscar">                
+                <div th:if="${error} != null">
+                    <p class="absolute text-red-500 text-lg" th:text="${error}"></p>
+                </div>
+            </form>
+
+            <div>
+                <h1 class="text-5xl text-center text-blue-700 font-black uppercase mt-6 pb-7">usuarios</h1>
+            </div>
+
+            <div>
+                <a th:href="@{/admin/user/create}" class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500">agregar usuario</a>            
+            </div>
+        </div>   
+        
+        <p class="mx-20 text-end text-xl mb-2 font-bold uppercase" th:if="${userList != null and !#lists.isEmpty(userList)}">cantidad <span th:text="${#lists.size(userList)}"class="font-black"></span></p>        
+        
+        <div th:if="${userList} != null">
+            <table class="mx-16 w-11/12 text-center table-auto">
+                <thead class="bg-blue-200 uppercase text-lg">
+                    <tr>
+                        <th>nombre</th>
+                        <th>apellido</th>
+                        <th>jerarquia</th>
+                        <th>legajo</th>
+                        <th>n° operador</th>
+                        <th>teléfono</th>
+                        <th>email</th>  
+                        <th>rol</th>
+                        <th:block th:if="${currentUser?.rol?.toString() == 'SUPERADMIN'}">
+                            <th>acciones</th>
+                        </th:block>                      
+                    </tr>
+                </thead>
+    
+                <tbody th:each="user : ${userList}" class="font-bold">
+                    <tr class="h-10 uppercase">
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.hierarchy.name}"></td>
+                        <td th:text="${user.personalFile}"></td>
+                        <td th:text="${user.operatorNumber}"></td>
+                        <td th:text="${user.phoneNumber}"></td>
+                        <td th:text="${user.email}"></td>   
+                        <td th:text="${user.rol}"></td>                    
+                        <td th:if="${currentUser?.rol?.toString() == 'SUPERADMIN'}" class="capitalize w-64">
+                            <ul class="flex gap-2 justify-center">
+                                <li>
+                                    <a th:href="@{/admin/user/edit/__${user.id}__}" class="px-3 py-1 font-bold bg-green-700 rounded text-white hover:bg-violet-500">editar</a>
+                                </li>
+                                <li th:if="${user.isActive} == true">
+                                    <a th:href="@{/admin/user/delete/__${user.id}__}" class="px-3 py-1 font-bold bg-blue-700 rounded text-white hover:bg-violet-500">activo</a>                        
+                                </li>
+                                <li th:if="${user.isActive} == false">
+                                    <a th:href="@{/admin/user/delete/__${user.id}__}" class="px-3 py-1 font-bold bg-red-700 rounded text-white hover:bg-violet-500">inactivo</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</body>
+</html>

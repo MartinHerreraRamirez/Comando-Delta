@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" : nav></nav>
+
+    <main class="w-full">
+      <div class="flex justify-around items-center gap-10 mb-10 mt-12">
+        <div>
+          <form th:action="@{/order/search}" method="GET" class="mb-5">
+            <input
+              class="border-2 p-2"
+              type="text"
+              placeholder="Ingrese N° de orden"
+              name="number"
+            />
+            <input
+              class="text-white font-bold p-2 bg-blue-700 rounded capitalize hover:bg-purple-500 cursor-pointer"
+              type="submit"
+              value="buscar"
+            />
+          </form>
+        
+
+          <div th:if="${error} != null">
+            <p class="absolute text-red-500 text-lg" th:text="${error}"></p>
+          </div>
+
+        <div>
+          <form th:action="@{/order/load}" method="GET" class="flex items-center">
+            <div class="grid grid-cols-1 p-4">             
+              <div class="flex items-center gap-4">
+                <label class="flex items-center">
+                        <input type="radio" name="status" value="active" class="mr-2">
+                        Activos
+                    </label>
+                    <label class="flex items-center">
+                      <input type="radio" name="status" value="inactive" class="mr-2">
+                      Inactivos
+                    </label>
+                  </div>
+                </div>                
+                
+                <div class="-mt-2">
+                  <input class="text-white font-bold p-2 bg-blue-700 rounded hover:bg-purple-500 cursor-pointer" type="submit" value="Cargar">
+                </div>
+                
+              </form>
+            </div>
+        </div>
+              
+        <h1 class="text-5xl text-blue-700 font-black uppercase mt-6 pb-7">
+          servicios
+        </h1>
+              
+        <div class="flex flex-col gap-3 mt-5">
+          <th:block th:sec="hasRole('SUPERADMIN')">
+            <a
+            th:href="@{/order/reset}"
+            class="text-center p-2 bg-red-700 rounded text-white font-bold capitalize hover:bg-purple-500"
+            >reiniciar ordenes</a
+            >
+          </th:block>
+          <a
+          th:href="@{/order/register}"
+          class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500"
+          >agregar servicio</a
+          >
+          <a
+            th:href="@{/order/statistics}"
+            class="text-center p-2 bg-blue-700 rounded text-white font-bold capitalize hover:bg-purple-500"
+            >estadisticas</a
+          >
+        </div>
+      </div>
+
+      <p
+        class="mx-20 text-end text-md mb-2 font-black uppercase"
+        th:if="${orderList != null and !#lists.isEmpty(orderList)}"
+      >
+        cantidad
+        <span th:text="${#lists.size(orderList)}" class="font-black"></span>
+      </p>
+
+      <div>
+        <table class="mx-16 w-11/12 text-center mb-10 uppercase">
+          <thead class="bg-blue-200 uppercase text-lg">
+            <tr>
+              <th scope="col" class="mx-5">n° orden</th>
+              <th scope="col">solicitado por</th>
+              <th scope="col">salida</th>
+              <th scope="col">lugar</th>
+              <th scope="col">especialidad</th>
+              <th scope="col">personal</th>
+              <th scope="col">movil</th>
+              <th th:if="${#lists.size(orderList) > 0 && orderList[0].isActive != false}"scope="col" >acciones</th>
+            </tr>
+          </thead>
+          <tbody th:if="${orderList} != null" th:each="order : ${orderList}">
+            <tr class="font-bold border-b-4 border-blue-200 space-y-5">
+              <td scope="row" th:text="${order.orderNumber}"></td>
+              <td scope="row" th:text="${order.requestType}"></td>
+              <td scope="row" th:text="${order.departureTime}"></td>
+              <td scope="row" th:text="${order.place}" class="break-all px-10"></td>
+              <td scope="row" th:text="${order.serviceType}"></td>              
+              <td scope="row"><span class="block" th:each="individual : ${order.individuals}" th:text="${individual.fullName}"></span></td>              
+              <td scope="row"><span class="block" th:each="automobile : ${order.automobiles}" th:text="${automobile.number}"></span></td>              
+              <td th:if="${order.isActive != false}" scope="row" class="capitalize flex justify-center items-center gap-2 h-12">
+                <a th:href="@{/order/see/__${order.id}__}" class="px-3 py-1 font-bold bg-blue-700 rounded text-white hover:bg-violet-500"
+                  >ver
+                </a>
+                <a
+                  th:href="@{/order/edit/__${order.id}__}"
+                  class="px-3 py-1 font-bold bg-green-700 rounded text-white hover:bg-violet-500"
+                  >editar</a
+                >
+               
+                <form
+                th:action="@{/order/finish/__${order.id}__}"
+                method="post"                  
+                >
+                  <input type="hidden" th:value="${id}" name="id" />
+                  <button
+                  type="submit"
+                  class="px-3 py-1 capitalize font-bold bg-red-700 rounded text-white hover:bg-violet-500"
+                  >
+                  finalizar
+                  </button>
+                </form>                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p th:if="${#lists.isEmpty(orderList)}">
+          <span class="flex justify-center text-2xl font-black uppercase mt-20"
+            >no se encontraron resultados</span
+          >
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

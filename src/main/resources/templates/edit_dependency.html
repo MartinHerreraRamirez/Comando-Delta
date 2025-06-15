@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="bg-gray-200">
+    <nav th:replace="fragments/nav" : nav></nav>
+
+    <main class="w-full">
+      <h1
+        class="text-center text-5xl mt-5 font-black uppercase text-blue-700 mb-20"
+      >
+        Editar Dependencia
+      </h1>
+
+      <div class="flex justify-center" th:if="${error} != null">
+        <p
+          class="absolute bg-red-600 rounded uppercase px-5 py-1 text-center text-white text-xl"
+          th:text="${error}"
+        ></p>
+      </div>
+
+      <form
+        method="POST"
+        th:action="@{/dependency/edit/__${dependencyEdit.id}__}"
+        class="mx-auto w-full max-w-6xl p-10 grid gap-6 bg-slate-100 shadow-2xl rounded-2xl mb-10"
+        th:object="${dependencyEdit}"
+      >
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <label for="code" class="block font-bold">
+            Código
+            <input
+              type="text"
+              id="code"
+              name="code"
+              th:field="*{code}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Código"
+              required
+            />
+          </label>          
+
+          <label for="name" class="block font-bold">
+            Nombre
+            <input
+              type="text"
+              id="name"
+              name="name"
+              th:field="*{name}"
+              class="block w-full border-2 px-4 py-2 font-normal rounded"
+              placeholder="Ingrese Nombre"
+              required
+            />
+          </label>
+        </div>
+
+        <div class="flex justify-center mt-6">
+          <button
+            class="bg-blue-700 p-3 rounded-xl uppercase w-2/5 text-white font-semibold hover:bg-violet-500 hover:cursor-pointer"
+          >
+            Editar
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

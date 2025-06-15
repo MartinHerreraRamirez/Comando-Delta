@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments/head" :: head></head>
+  <body class="h-screen">
+    <main class="flex">
+      <div class="flex items-center justify-center bg-blue-700 h-screen w-1/2">
+        <img
+          th:src="@{/../logo.png}"
+          alt="logo"
+          class="rounded-full h-3/4 w-3/4 object-contain"
+        />
+      </div>
+
+      <div class="w-1/2 h-screen">
+        <h1
+          class="text-center text-5xl mt-20 font-black uppercase text-blue-700"
+        >
+          Iniciar Sesion
+        </h1>
+
+        <div class="flex justify-center" th:if="${success} != null">
+          <p
+            th:text="${success}"
+            class="absolute bg-green-600 rounded uppercase px-5 py-2 text-center text-white text-xl mt-5"
+          ></p>
+        </div>
+
+        <div class="flex justify-center" th:if="${error} != null">
+          <p
+            th:text="${error}"
+            class="absolute bg-red-500 rounded uppercase px-5 py-2 text-center text-white text-xl mt-5"
+          ></p>
+        </div>
+
+        <div class="flex justify-center items-center h-4/6">
+          <form
+            class="space-y-5 max-w-sm rounded px-16 py-16 shadow-2xl"
+            th:action="@{/logincheck}"
+            method="POST"
+          >
+            <div>
+              <label for="username" class="block font-bold">Usuario</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="border px-2"
+                placeholder="Ingrese N° Operador"
+                required
+              />
+            </div>
+            <div>
+              <label for="password" class="block font-bold">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="border px-2"
+                placeholder="Ingrese Contraseña"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="bg-blue-700 p-2 rounded-xl uppercase w-full text-white font-semibold hover:bg-violet-500 hover:cursor-pointer"
+            >
+              Ingresar
+            </button>
+            
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

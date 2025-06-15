@@ -1,0 +1,23 @@
+<nav th:if="${session.currentUser} != null" class="flex items-center justify-between px-4 bg-blue-700 py-2">
+    
+    <div class="flex gap-5 items-center text-white font-bold text-lg capitalize">
+        <a th:href="@{/}">                
+            <img th:src="@{/logo.png}" alt="logo" class="rounded-full h-20 w-20">
+        </a>        
+    </div>
+
+    <div class="flex gap-3 items-center text-white font-bold text-lg capitalize">
+        <a th:if="${session.currentUser.rol.toString() == 'ADMIN' || session.currentUser.rol.toString() == 'SUPERADMIN' || session.currentUser.rol.toString() == 'COMANDO' }" th:href="@{/hierarchy/list}" class="hover:bg-violet-600 p-2 rounded">jerarquia</a>        
+        <a th:if="${session.currentUser.rol.toString() == 'ADMIN' || session.currentUser.rol.toString() == 'SUPERADMIN' || session.currentUser.rol.toString() == 'COMANDO' }" th:href="@{/individual/list}" class="hover:bg-violet-600 p-2 rounded">personal</a>        
+        <a th:if="${session.currentUser.rol.toString() == 'ADMIN' || session.currentUser.rol.toString() == 'SUPERADMIN' || session.currentUser.rol.toString() == 'COMANDO' }" th:href="@{/dependency/list}" class="hover:bg-violet-600 p-2 rounded">dependencias</a>                
+        <a th:href="@{/automobile/list}" class="hover:bg-violet-600 p-2 rounded">moviles</a>
+        <a th:href="@{/loan/list}" class="hover:bg-violet-600 p-2 rounded">prestamos</a>
+        <a th:href="@{/charge/list}" class="hover:bg-violet-600 p-2 rounded">cargos</a>        
+        <a th:href="@{/sim/list}" class="hover:bg-violet-600 p-2 rounded">sims</a>        
+        <a th:href="@{/report/list}" class="hover:bg-violet-600 p-2 rounded">denuncias</a>        
+        <a th:href="@{/equipment/list}" class="hover:bg-violet-600 p-2 rounded">equipos</a>
+        <a th:href="@{/order/list}" class="hover:bg-violet-600 p-2 rounded">servicios</a>
+        <a th:if="${session.currentUser.rol.toString() == 'ADMIN' || session.currentUser.rol.toString() == 'SUPERADMIN'}" th:href="@{/admin/dashboard}" class="hover:bg-violet-600 p-2 rounded">Usuarios</a>
+        <a th:if="${session.currentUser} != null" href="/logout" class="hover:bg-violet-600 p-2 rounded">cerrar sesion</a>                 
+    </div> 
+</nav>

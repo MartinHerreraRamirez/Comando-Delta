@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+
+<head th:replace="fragments/head" :: head></head>
+<body class="bg-gray-200">    
+    
+    <main class="flex justify-center items-center bg-blue-600">
+
+        <img class="relative h-1/2 w-1/2 mx-auto my-10" th:src="@{/logo.png}" alt="logo">
+
+        <div class="absolute space-y-10 rounded-xl mx-auto text-center text-4xl text-white bg-red-600 font-black py-10 px-32 uppercase "> 
+            <p th:text="'error ' + ${errorCode}"></p>
+            <p th:text="${msg}"></p>
+
+        </div>
+        
+    </main>  
+
+</body>
+</html>

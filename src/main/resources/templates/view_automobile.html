@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+  <head th:replace="fragments/head :: head"></head>
+  <body class="bg-gray-200">
+    <nav th:replace="/fragments/nav" : nav></nav>
+
+    <main
+      class="my-10 mx-4 md:mx-10 lg:mx-20 xl:mx-40 h-full border border-2 shadow-2xl"
+    >
+      <h1
+        class="text-3xl sm:text-4xl md:text-5xl mt-5 font-bold uppercase text-center mb-5"
+      >
+        delta
+        <span th:text="${automobile.number}" class="block"></span>
+      </h1>
+
+      <form class="grid grid-cols-1 md:grid-cols-3 gap-10 mx-10 p-10">
+        <section class="capitalize space-y-7 text-xl font-bold w-full">
+          <p>
+            <i>Marca:</i>
+            <span th:text="${automobile.tradeMark}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Modelo:</i>
+            <span th:text="${automobile.model}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Dominio:</i>
+            <span th:text="${automobile.licensePlate}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Color:</i>
+            <span th:text="${automobile.color}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Tipo:</i>
+            <span th:text="${automobile.typeMobile}" class="font-black"></span>
+          </p>
+
+          <p>
+            <i>Estado:</i>
+            <span th:text="${automobile.status}" class="font-black"></span>
+          </p>          
+        </section>
+
+        <section
+          class="mx-5 p-2 capitalize space-y-5 text-xl font-bold w-full md:col-span-2"
+        >
+          <div class="h-96 w-full">
+            <img
+              th:src="@{/image/automobile/__${automobile.id}__}"
+              alt="imagen cargo"
+              class="h-full w-full object-cover"
+            />
+          </div>          
+        </section>
+      </form>
+    </main>
+  </body>
+</html>
